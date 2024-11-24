@@ -81,6 +81,7 @@ export const login = async (req: Request, res: Response) => {
       res.status(400).json({ error: error.message })
       return
     }
+    console.log(error)
     res.status(500).json({ error: 'Registration failed' })
     return
   }

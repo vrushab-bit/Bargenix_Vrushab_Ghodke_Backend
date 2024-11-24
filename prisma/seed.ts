@@ -1,5 +1,4 @@
 import { PrismaClient } from '@prisma/client'
-import bcrypt from 'bcrypt'
 import { users, products } from './mockData'
 
 const prisma = new PrismaClient()
@@ -12,7 +11,7 @@ async function main() {
         data: {
           name: user.name,
           email: user.email,
-          passwordHash: await bcrypt.hash(user.password, 10)
+          passwordHash: user.passwordHash
         }
       })
     })
@@ -20,6 +19,7 @@ async function main() {
     products.forEach(async (product) => {
       await prisma.product.create({
         data: {
+          id: product.id,
           name: product.name,
           price: product.price
         }

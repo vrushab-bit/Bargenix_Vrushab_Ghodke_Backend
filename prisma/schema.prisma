@@ -14,31 +14,36 @@ datasource db {
 }
 
 model User {
-  id   String   @id @default(cuid()) // Unique identifier for the user
-  name String   // Name of the user
-  email String   @unique// Email of the user
-  passwordHash String   // Hashed password of the user
-  coupons Coupon[] @relation("UserCoupons") // Relation to coupons
-  Coupon Coupon[]
+  id           String   @id @default(cuid()) // Unique identifier for the user
+  name         String // Name of the user
+  email        String   @unique // Email of the user
+  passwordHash String // Hashed password of the user
+  coupons      Coupon[] @relation("UserCoupons") // Relation to coupons
+  Coupon       Coupon[]
 }
 
-
 model Product {
-  id    String   @id @default(cuid()) // Unique identifier for the product
-  name  String   // Name of the product
-  price Float    // Price of the product
+  id      String   @id @default(cuid()) // Unique identifier for the product
+  name    String // Name of the product
+  price   Float // Price of the product
   coupons Coupon[] @relation("ProductCoupons") // Relation to coupons
 }
 
 model Coupon {
-  id             String   @id @default(cuid()) // Unique identifier for the coupon
-  productId      String   // Foreign key referencing Product
-  discountValue   Float    // Discount value of the coupon
+  id             String           @id @default(cuid()) // Unique identifier for the coupon
+  couponId       String           @unique // Coupon ID
+  productId      String // Foreign key referencing Product
+  discountValue  Float // Discount value of the coupon
   expirationDate DateTime // Expiration date of the coupon
-  userId         String   // Foreign key referencing User
-  product        Product   @relation("ProductCoupons", fields: [productId], references: [id]) // Relation to Product
-  user           User      @relation(fields: [userId], references: [id]) // Relation to User
+  status         EnumCouponStatus // Status of the coupon
+  userId         String // Foreign key referencing User
+  product        Product          @relation("ProductCoupons", fields: [productId], references: [id]) // Relation to Product
+  user           User             @relation(fields: [userId], references: [id]) // Relation to User
 
   User User[] @relation("UserCoupons")
 }
 
+enum EnumCouponStatus {
+  ACTIVE
+  INACTIVE
+}
