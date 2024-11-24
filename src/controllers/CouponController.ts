@@ -3,6 +3,7 @@ import { CustomRequest } from '../middleware/requireAuth'
 import prisma from '../services/db'
 import { generateCouponSchema } from '../schemas/generateCouponSchema'
 import { ValidationError } from 'yup'
+import { logger } from '../logger/httpLogger'
 
 export const generateCoupon = async (req: CustomRequest, res: Response) => {
   try {
@@ -68,6 +69,7 @@ export const generateCoupon = async (req: CustomRequest, res: Response) => {
       return
     }
     res.status(500).json({ error: 'Registration failed' })
+    logger.error(error)
     return
   }
 }
@@ -116,6 +118,7 @@ export const validateCoupon = async (req: CustomRequest, res: Response) => {
     })
   } catch (error) {
     res.status(500).json({ error: 'Validation failed' })
+    logger.error(error)
     return
   }
 }

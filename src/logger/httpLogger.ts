@@ -1,7 +1,15 @@
 import winston from 'winston'
+import DailyRotateFile from 'winston-daily-rotate-file'
 
 const { combine, timestamp, json, printf } = winston.format
 const timestampFormat = 'MMM-DD-YYYY HH:mm:ss'
+
+const fileRotateTransport = new DailyRotateFile({
+  dirname: 'logs',
+  filename: 'combined-%DATE%.log',
+  datePattern: 'YYYY-MM-DD',
+  maxFiles: '14d'
+})
 
 export const logger = winston.createLogger({
   format: combine(
@@ -19,5 +27,5 @@ export const logger = winston.createLogger({
     })
   ),
   // store logs in the console
-  transports: [new winston.transports.File({ filename: 'logs.log' })]
+  transports: [fileRotateTransport]
 })

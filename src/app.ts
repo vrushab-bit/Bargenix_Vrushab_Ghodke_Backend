@@ -5,6 +5,7 @@ import { limiter } from './services/rateLimit'
 
 export default function createServer() {
   const app = express()
+
   app.use(limiter)
   app.use(urlencoded({ extended: true }))
   app.use(json())

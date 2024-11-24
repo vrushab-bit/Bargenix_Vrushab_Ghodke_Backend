@@ -5,6 +5,7 @@ import bcrypt from 'bcrypt'
 import prisma from '../services/db'
 import { loginSchema } from '../schemas/loginSchema'
 import jwt from 'jsonwebtoken'
+import { logger } from '../logger/httpLogger'
 
 export const signup = async (req: Request, res: Response) => {
   try {
@@ -33,6 +34,7 @@ export const signup = async (req: Request, res: Response) => {
       return
     }
     res.status(500).json({ error: 'Registration failed' })
+    logger.error(error)
     return
   }
 }
